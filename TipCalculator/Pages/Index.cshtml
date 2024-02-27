@@ -1,0 +1,61 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Tip Calculator</h1>
+    <div class="input-group mb-3 gap-4">
+        <h1 class="display-6">Cost of meal</h1>
+        <input type="number" class="form-control" id="meal_cost" placeholder="amount in dollars" aria-describedby="basic-addon1">
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tip percentage</th>
+                <th scope="col">Tip amount</th>
+            </tr>
+        </thead>
+        <tbody id="tipTableBody">
+            <!-- Tip amounts will be added dynamically here -->
+        </tbody>
+    </table>
+    <div class="d-flex flex-row gap-4">
+        <button type="button" class="btn bg-primary" id="calculate">Calculate</button>
+        <button type="button" class="btn bg-warning" id="clear">Clear</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById("calculate").addEventListener("click", function () {
+        // Get the meal cost from the input field
+        var mealCost = parseFloat(document.getElementById("meal_cost").value);
+
+        // Check if the input is a valid number
+        if (isNaN(mealCost)) {
+            alert("Please enter a valid number for the cost of the meal.");
+            return;
+        }
+
+        // Clear previous tip amounts
+        document.getElementById("tipTableBody").innerHTML = "";
+
+        // Tip percentages array
+        var tipPercentages = [0.15, 0.20, 0.25];
+
+        // Calculate and display tip amounts
+        tipPercentages.forEach(function (tipPercentage) {
+            var tipAmount = mealCost * tipPercentage;
+            var row = document.createElement("tr");
+            row.innerHTML = "<th scope='row'>" + (tipPercentage * 100) + " %</th><td>" + tipAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) + "</td>";
+            document.getElementById("tipTableBody").appendChild(row);
+        });
+    });
+
+    document.getElementById("clear").addEventListener("click", function () {
+        // Clear the meal cost input and tip amounts
+        document.getElementById("meal_cost").value = "";
+        document.getElementById("tipTableBody").innerHTML = "";
+    });
+</script>
